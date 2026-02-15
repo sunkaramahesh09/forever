@@ -15,11 +15,11 @@ const Login = () => {
     event.preventDefault();
     try {
       if (currentState === "Sign Up") {
-        const response = await axios.post(backendUrl + "/api/user/register", {
-          name,
-          email,
-          password,
-        });
+        const response = await axios.post(
+          backendUrl + "/api/user/register",
+          { name, email, password }
+        );
+
         if (response.data.success) {
           setToken(response.data.token);
           localStorage.setItem("token", response.data.token);
@@ -27,10 +27,11 @@ const Login = () => {
           toast.error(response.data.message);
         }
       } else {
-        const response = await axios.post(backendUrl + "/api/user/login", {
-          email,
-          password,
-        });
+        const response = await axios.post(
+          backendUrl + "/api/user/login",
+          { email, password }
+        );
+
         if (response.data.success) {
           setToken(response.data.token);
           localStorage.setItem("token", response.data.token);
@@ -45,10 +46,10 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if(token){
-        navigate('/');
+    if (token) {
+      navigate("/");
     }
-  }, [token]);
+  }, [token, navigate]);
 
   return (
     <form
@@ -59,9 +60,8 @@ const Login = () => {
         <p className="prata-regular text-3xl">{currentState}</p>
         <hr className="border-none h-[1.5px] w-8 bg-gray-800" />
       </div>
-      {currentState === "Login" ? (
-        ""
-      ) : (
+
+      {currentState === "Sign Up" && (
         <input
           type="text"
           onChange={(e) => setName(e.target.value)}
@@ -71,6 +71,7 @@ const Login = () => {
           required
         />
       )}
+
       <input
         type="email"
         onChange={(e) => setEmail(e.target.value)}
@@ -79,6 +80,7 @@ const Login = () => {
         placeholder="Email"
         required
       />
+
       <input
         type="password"
         value={password}
@@ -87,11 +89,13 @@ const Login = () => {
         placeholder="Password"
         required
       />
+
       <div className="w-full flex justify-between text-sm -mt-2">
         <p className="cursor-pointer">Forgot your password?</p>
+
         {currentState === "Login" ? (
           <p
-            onClick={() => setCurrentState("Sign up")}
+            onClick={() => setCurrentState("Sign Up")}
             className="cursor-pointer"
           >
             Create account
@@ -105,6 +109,7 @@ const Login = () => {
           </p>
         )}
       </div>
+
       <button className="bg-black text-white font-light px-8 py-2 mt-4">
         {currentState === "Login" ? "Sign In" : "Sign Up"}
       </button>
